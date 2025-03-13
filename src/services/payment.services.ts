@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client'
 import { resolve } from 'path';
 
 
-type  Order = PrismaClient['Order'];
+import { Order } from '@prisma/client';
 
 
 export const processPayment = async (order:Order , paymentDetails: any): Promise<{success: boolean; paymentId?:string; error? :string}> => {

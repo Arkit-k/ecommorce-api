@@ -1,9 +1,9 @@
 import { createProduct } from './product.services';
- import { PrismaClient  } from "@prisma/client";
+import { PrismaClient, OrderStatus, Order, Prisma } from "@prisma/client";
  import * as paymentSservice from './payment.services'
 
- type  Order = PrismaClient['Order'];
- type OrderStatus = PrismaClient['OrderStatus']
+// type  Order = PrismaClient['Order'];
+// type OrderStatus = PrismaClient['OrderStatus']
 
  const prisma = new PrismaClient();
 
@@ -25,7 +25,7 @@ import { createProduct } from './product.services';
             items: CartItem[];
       }
 
-      return prisma.$transaction(async (tx: PrismaClient): Promise<Order> => {
+      return prisma.$transaction(async (tx: Prisma.TransactionClient): Promise<Order> => {
             const cart: Cart = await tx.cart.findUniqueOrThrow({
                   where: { userId },
                   include: {
@@ -120,7 +120,7 @@ import { createProduct } from './product.services';
                                     select:{
                                           id: true, 
                                           name: true,
-                                          ImageUrl:true
+                                          imageUrl:true
                                     }
                               }
                         }

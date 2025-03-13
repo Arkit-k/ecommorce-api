@@ -1,11 +1,11 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, User } from "@prisma/client";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import {RegisterUserInput , LoginUserInput } from '../types';
 
 const prisma = new PrismaClient();
 
-type User = PrismaClient['User'];
+// type User is now imported from @prisma/client
 
 
 export const registerUser = async (input:RegisterUserInput): Promise<Omit<User, 'password'>> => {

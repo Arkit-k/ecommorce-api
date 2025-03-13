@@ -1,12 +1,9 @@
-import { PrismaClient  } from '@prisma/client'
-
-type Cart = PrismaClient['Cart'];
-type CartItem = PrismaClient['CartItem'];
+import { PrismaClient, Cart, CartItem } from '@prisma/client'
 
 const prisma = new PrismaClient();
 
 export const getCart = async(userId:string):Promise<Cart & {items:(CartItem & {product: {id:string; name:string; price:number; imageUrl:string | null}})[]}> =>{
- return prisma.cart.findUniqueorThrow({
+ return prisma.cart.findUniqueOrThrow({
       where: { userId },
       include:{
         items:{
@@ -43,7 +40,7 @@ export const addToCart = async (userId:string, productId:string,quantity:number)
       }
       const existingItem = await prisma.cartItem.findUnique({
             where:{
-                  cartId_product:{
+                  cartId_productId:{
                         cartId:cart.id,
                         productId
                   }
@@ -69,7 +66,7 @@ export const addToCart = async (userId:string, productId:string,quantity:number)
 export const updateCartItem = async (userId: string , cartItemId:string, quantity:number):Promise<CartItem> =>{
       const cart = await prisma.cart.findUnique({
             where: { userId },
-            include: {item: true}
+            include: {items: true}
       });
 
       if (!cart) {
